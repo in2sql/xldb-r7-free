@@ -1,0 +1,76 @@
+<!--
+ Окно плагина in2sql отображения полного дерева объектов
+ -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">         
+		<style type="text/css">
+			html, body {
+				margin: 0px;
+				padding: 0px;
+				/* overflow: hidden; */
+				width:100%;
+				height:100%;
+			}			
+			.hwt-content mark {
+				border-radius: 3px;
+				background-color: #d0f6ff;
+			}			
+		</style>		
+		<script type="text/javascript" src="../v1/plugins.js"></script>
+		<script type="text/javascript" src="../v1/plugins-ui.js"></script>
+		<script src="scripts/jquery-3.7.0.min.js"></script>		
+		<script src="scripts/jquery-ui-1.13.2/jquery-ui.min.js"></script>		
+		<script src="scripts/jquery.fancytree-all-deps.min.js"></script>				
+		
+		<script src="scripts/jexcel/index.js"></script>
+		<script src="scripts/jexcel/jsuites.net_v4_jsuites.js"></script>
+		<script src="scripts/jquery.highlight-within-textarea.js"></script>
+		<script src="scripts/index_tree_object.js"></script>
+
+		<link href="scripts/jquery-ui-1.13.2/jquery-ui.css" rel="stylesheet">								
+		<link rel="stylesheet" href="../v1/plugins.css">		
+		<link href="scripts/jquery-ui-1.13.2/jquery-ui.css" rel="stylesheet">
+		
+		<link href="resources/skin-win8/ui.fancytree.css" rel="stylesheet">	
+		<link rel="stylesheet" href="scripts/jexcel/jspreadsheet.css" type="text/css" />
+		<link rel="stylesheet" href="scripts/jexcel/jsuites.net_v4_jsuites.css" type="text/css" />
+		<link rel="stylesheet" href="scripts/jexcel/fonts.googleapis.css" />	
+		<link rel="stylesheet" href="scripts/jquery.highlight-within-textarea.css">
+		
+	</head>
+	<body >	
+			<div id="text-res" class="ui-widget" style="height:94%;">
+				<div style="width: 100%;height: 30px;padding-left: 5px;padding-top: 5px;">
+					<button id="btnHideTree" >Hide additional panel</button> <button id="btnAddQuery" disabled >Add new query</button>
+				</div>
+				<div id="left-column" style="float:left;width:30%">														
+					<!--Дерево представления объектов-->					
+					<div id="tree-frame"  style="width:100%;height:585px; background-color:#fff;border:1px solid #aaa;overflow:scroll"></div>
+					<div id="dialog-menu" style="display: none;">
+						<input type="text" id="dialog-menu-name-sqlreq" style="margin-top: 5px;" placeholder="Request name"></input> 
+						<button id="btn-add-request" style="margin-top: 5px;">Add SQL request</button>								
+					</div>
+				</div>
+				<div id="right-column" style="width:70%;height: 585px;float:right;">
+				<!--Редактор SQL запросов-->					
+					<div id="queries_list" style="width:100%; height:100%;background-color:#fff;border: 1px solid #aaa;border-radius: 2px;overflow:auto"></div> 
+				</div>				
+			</div>			
+			<!--Область кнопок завершения работы с формой-->								
+			<div class="ui-widget" style="width: 100%;;height: 20px;padding-left: 5px;">										
+					<button id="btnSaveState" >Save state</button> <button id="btnCancel" >Cancel</button>				
+			</div>
+			<!--Область иконки загрузки-->
+			<div style="width: 100%;height: 10px;">
+				<div id="loader-container3"  style="height: 10px; border: 0px solid;"></div>
+			</div>
+			<!--Диалоговое окно для разного рода сообщений пользователям-->
+            <div id="dialog-message" style="display: none;">                
+                <p id="dialog-message-text">			  
+					No requests generated!
+                </p>			
+            </div>
+	</body>	
+</html>
