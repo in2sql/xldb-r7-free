@@ -60,14 +60,14 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 						type:TypeTreeNode.ROOT,
 						activate:function(event, data){
 							if(data.node.type==TypeTreeNode.SQL){
-								$("#btnAddQuery").prop("disabled",false);
+								//$("#btnAddQuery").prop("disabled",false);
 								currentConnectionName=data.node.title;
 								currentConnectionID="#"+$(data.node.li).attr('id');
 							}
 							else{
 								currentConnectionID='';
 								currentConnectionName='';
-								$("#btnAddQuery").prop("disabled",true);
+								//$("#btnAddQuery").prop("disabled",true);
 							}
 						},
 						dblclick: function(event, data) {										
@@ -115,7 +115,7 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 							dbUserName=item['username'];
 							dbUserPassword=item['password'];
 							
-							curRes['name']=dbRequestName;						
+							curRes['name']=dbRequestName;							
 
 							switch (localStorage.getItem('dbType')) {
 								case 0:		
@@ -204,13 +204,18 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 	//Ассинхронный запрос к удалённой БД для заполнения по результатам текущего SQL запроса
 	function queryTableBySqlRequest(queryString){
 		createLoader();
-		dbSqlReguest=verifiedSqlRequest(queryString).replace(/ /g,"%20");
+		queryString=verifiedSqlRequest(queryString);
+		dbSqlReguest=encodeURIComponent(queryString);		
+		
 		switch (localStorage.getItem('dbType')) {
 			case 0:
 			default:
+				dbSqlFormatAnswer="%20FORMAT%20JSON";				
+				dbFullSqlReguest="https://"+dbUrlReguest+"/?user="+dbUserName+"&password="+dbUserPassword+"&query="+dbSqlReguest+dbSqlFormatAnswer;
 				dbSqlFormatAnswer="%20FORMAT%20JSON";
 				dbFullSqlReguest="https://"+dbUrlReguest+"/?user="+dbUserName+"&password="+dbUserPassword+"&query="+dbSqlReguest+dbSqlFormatAnswer;				
-				fetch(dbFullSqlReguest)//Собственно сам ассинхронный запрос к серверу
+				fetch(dbFullSqlReguest)				
+				//Собственно сам ассинхронный запрос к серверу
 				.then((response) => {
 					if (response.status >= 200 && response.status < 300) {
 						return response;
@@ -225,15 +230,14 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 				.catch(function(e){//Простейшая обработка ошибки запроса					
 					messageBox(true,window.Asc.plugin.tr("Error сonnection!")+" "+e);
 					destroyLoader();
-				});
-				;
+				});				
 				break;			
 		}
 	};
 	//Создать узловой корень и заполнить структуру по текущему соединению  к БД (typeData - тип: таблицы(0) или представления(1))
 	function fillRequestDBObjectsInTree(textBuf,rootDbNode,data,typeData){			
 		var itm;	
-		
+		var localRootNode=undefined;
 		let rows=textBuf.split('\n');
 		let rowCount=rows.length;
 		
@@ -247,16 +251,17 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 					title:data['name'],
 				});
 				data['root']=rootNode;
+				currentConnectionName=data['name'];														
 			}
 			if(typeData==0){				
-				rootNode =  data['root'].addChildren({
+				localRootNode =  data['root'].addChildren({
 					folder:true,
 					type:TypeTreeNode.DB,
 					title:'Tables'
 				});
 			}
 			else if(typeData==1){							
-				rootNode = data['root'].addChildren({
+				localRootNode = data['root'].addChildren({
 					folder:true,
 					type:TypeTreeNode.DB,
 					title:'Views'
@@ -267,7 +272,7 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 				if(element.length>0){					
 					itm=element.replace(/\"/g,'');										
 					if(itm.length>0){
-						childNode = rootNode.addChildren({
+						childNode = localRootNode.addChildren({
 							title: itm,
 							iconTooltip:window.Asc.plugin.tr("Transfer title by double click"),
 							tooltip:window.Asc.plugin.tr("Transfer title by double click"),
@@ -336,7 +341,8 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 						columnItem=new Object;
 						columnItem['title']=meta[j].name;
 						columnItem['type']= meta[j].type;//'text';						
-						columnItem['width']=(tableWidthValue-70)/(colCount);						
+						columnItem['width']=(tableWidthValue-70)/(colCount);
+						columnItem['align']='right';
 						column2.push(columnItem);														
 					}					
 
@@ -354,7 +360,10 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 						tableHeight:heightTableInQuery +'px',
 						tableWidth:tableWidthValue +'px',						
 						data:data2,
-						columns: column2,												
+						columns: column2,						
+						contextMenu: function() {
+							return false;
+						}												
 					});
 				}
 				break;			
@@ -544,10 +553,10 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 			onRemoveQuery($(this).attr('id'));						
 		});		
 
-		$("#txtSQL"+iQuery).highlightWithinTextarea({
-			highlight: /select|DISTINCT|ON|where|FINAL|SAMPLE|ARRAY|GLOBAL|ANY|ALL|from|limit|like|not|and|or|join|left|right|INNER|FULL|CROSS|GROUP|BY|WITH|TO|STEP|LIMIT|UNION /gi,
-			className: 'blue'
-		});
+		// $("#txtSQL"+iQuery).highlightWithinTextarea({
+		// 	highlight: /select|DISTINCT|ON|where|FINAL|SAMPLE|ARRAY|GLOBAL|ANY|ALL|from|limit|like|not|and|or|join|left|right|INNER|FULL|CROSS|GROUP|BY|WITH|TO|STEP|LIMIT|UNION /gi,
+		// 	className: 'blue'
+		// });
 		
 		$("#txtSQL"+iQuery).on("change input selectionchange", function() {				
 			var currentVal = $(this).val();
@@ -789,7 +798,7 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 			
 			//Отработка нажатия на кнопку "Add new query" 
 			$(formElement.btnAddQuery).click(function(){
-				if(currentConnectionID.length>0)
+				//if(currentConnectionID.length>0)
 					showNewQueryDialog(currentConnectionID);
 			});
 			
@@ -916,7 +925,11 @@ const TypeInternalForms={ONE_VERSION:0,TWO_VERSION:1,THREE_VERSION:2};
 				messageBox(true,'No connection selected!');
 			}			
 			else{//Все поля заполнены, добавить в список				
-				$( "#dialog-menu" ).dialog( "option", "position", { my: "left top", at: "right top", of:idElementToPosition } );
+				if(idElementToPosition.length>0)
+					$( "#dialog-menu" ).dialog( "option", "position", { my: "left top", at: "right top", of:idElementToPosition } );
+				else
+					$( "#dialog-menu" ).dialog();
+
 				$( "#dialog-menu" ).dialog( "open" );//Модальное окно				
 			}
 		//}

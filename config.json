@@ -1,11 +1,11 @@
 {
-    "name" : "XLDB (free 1.0.0)",
+    "name" : "XLDB (free 1.0.2)",
     "nameLocale": {        
-        "ru": "XLDB (free 1.0.0)"
+        "ru": "XLDB (free 1.0.2)"
     },
 
     "guid" : "asc.{3843ab87-0c80-4992-892f-41fc00ee6de1}",
-	"version": "1.0.0",
+	"version": "1.0.2",
 
     "variations" : [
         {
@@ -52,7 +52,7 @@
 
 			"buttons" : [ { "text": "Ok", "primary": true } ],
 
-			"size" : [400, 150]
+			"size" : [400, 250]
 		}
     ]
 }
