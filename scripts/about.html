@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <style>
+        p, a{
+            font-size: 12px;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+    </style>
+    <script type="text/javascript" src="../v1/plugins.js"></script>
+    <script type="text/javascript" src="../v1/plugins-ui.js"></script>
+    <link rel="stylesheet" href="../v1/plugins.css">    
+</head>
+<body style="padding-left: 20px; padding-right: 20px">
+<p style="font-size: 12px">Плагин XLDB (free edition) предназначен для работы с данными облачной БД ClickHouse непосредственно из табличного редактора</p>
+<p style="font-size: 12px">Разработано в <b>ООО Датаконс</b></p>
+<p><a href="https://r7-consult.ru/" target="_blank">Заказать разработку/ Миграция решений MS Access</a></p>
+<p>Почта: <a href="mailto://er@exceldb.pro">er@exceldb.pro</a></p>
+<p>Version: 1.0.4 </p>
+<p>Все права защищены ООО "Датаконс" (С)2023</p>
+<p>Исходный код бесплатной версии<a href="https://github.com/in2sql/xldb-r7-free" target="_blank"> плагина</a></p>
+</body>
+    <script type="text/javascript">
+        window.Asc.plugin.init = function()
+        {           
+            this.resizeWindow(400, 250, 400, 250, 400, 250);         
+        };
+    
+
+        window.Asc.plugin.button = function(id)
+        {
+            this.executeCommand("close", "");
+        };
+
+    </script>
+</html>
