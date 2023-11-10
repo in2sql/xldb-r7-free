@@ -15,4 +15,4 @@ XLDB - плагин для работы с ClickHouse базой данных
 Десктоп приложение редактора таблиц
 
 ## Как установить:
-Для установки плагина скачайте файл с плагином и следуйте инструкциям на сайте [Р7-Офис](https://support.r7-office.ru/desktop_editors/api_desktop_editors/api_desktop_editors_general/adding-plugins/)
+Для установки плагина скачайте файл xldb(free 1.0.4).plugin и следуйте инструкциям на сайте [Р7-Офис](https://support.r7-office.ru/desktop_editors/api_desktop_editors/api_desktop_editors_general/adding-plugins/)
